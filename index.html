@@ -662,9 +662,47 @@
         setTimeout(() => notif.classList.remove("show"), 3000);
     }
 
-    function editarCliente(id) {
-        alert("Funcionalidade de edição em desenvolvimento!");
-    }
+   function editarCliente(id) {
+    const cliente = clientes.find(c => c.id === id);
+    if (!cliente) return;
+
+    // Preenche os campos do formulário com os dados atuais
+    document.getElementById('nome').value = cliente.nome;
+    document.getElementById('matricula').value = cliente.matricula;
+    document.getElementById('km').value = cliente.km;
+    document.getElementById('data').value = cliente.data;
+    document.getElementById('descricao').value = cliente.descricao;
+
+    // Muda o comportamento do botão para "Guardar Alterações"
+    const btn = document.querySelector('button[onclick="adicionarCliente()"]');
+    btn.innerHTML = "💾 GUARDAR ALTERAÇÕES";
+    btn.style.backgroundColor = "#ffc107"; // Cor amarela para indicar edição
+    
+    // Altera a função do botão temporariamente
+    btn.onclick = function() {
+        // Atualiza os dados no array
+        cliente.nome = document.getElementById('nome').value;
+        cliente.matricula = document.getElementById('matricula').value;
+        cliente.km = document.getElementById('km').value;
+        cliente.data = document.getElementById('data').value;
+        cliente.descricao = document.getElementById('descricao').value;
+
+        // Guarda no LocalStorage e atualiza a página
+        localStorage.setItem('clientes_oficina', JSON.stringify(clientes));
+        
+        // Reset do botão para o original
+        btn.innerHTML = "ADICIONAR CLIENTE";
+        btn.style.backgroundColor = ""; 
+        btn.onclick = adicionarCliente;
+
+        alert("Cliente atualizado com sucesso!");
+        renderizarClientes();
+        limparFormulario();
+    };
+
+    // Faz scroll para o topo para o utilizador ver o formulário preenchido
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
     document.getElementById("data").valueAsDate = new Date();
     document.getElementById("serviceDate").valueAsDate = new Date();

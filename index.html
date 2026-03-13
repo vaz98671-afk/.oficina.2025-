@@ -12,7 +12,7 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             min-height: 100vh;
             padding: 20px;
@@ -24,41 +24,60 @@
             margin: 0 auto;
         }
 
-        .login-screen {
+        /* Login */
+        .login-container {
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            z-index: 1000;
+        }
+
+        .login-container.hidden {
+            display: none;
         }
 
         .login-box {
             background: white;
             padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
             text-align: center;
             width: 100%;
             max-width: 400px;
         }
 
         .login-box h1 {
-            font-size: 32px;
+            color: #e74c3c;
             margin-bottom: 10px;
-            color: #333;
+            font-size: 32px;
         }
 
         .login-box p {
-            color: #666;
+            color: #7f8c8d;
             margin-bottom: 30px;
+            font-size: 14px;
         }
 
         .login-box input {
             width: 100%;
             padding: 12px;
             margin-bottom: 20px;
-            border: 2px solid #ddd;
-            border-radius: 5px;
+            border: 2px solid #ecf0f1;
+            border-radius: 8px;
             font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .login-box input:focus {
+            outline: none;
+            border-color: #e74c3c;
         }
 
         .login-box button {
@@ -67,38 +86,45 @@
             background: #e74c3c;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             font-size: 16px;
-            cursor: pointer;
             font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
         }
 
         .login-box button:hover {
             background: #c0392b;
         }
 
-        .main-screen {
+        /* Main App */
+        .app-container {
             display: none;
         }
 
+        .app-container.active {
+            display: block;
+        }
+
         .header {
-            background: #e74c3c;
-            color: white;
+            background: white;
             padding: 20px;
-            border-radius: 5px;
+            border-radius: 10px;
             margin-bottom: 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         .header h1 {
+            color: #e74c3c;
             font-size: 28px;
         }
 
         .logout-btn {
-            background: white;
-            color: #e74c3c;
+            background: #e74c3c;
+            color: white;
             border: none;
             padding: 10px 20px;
             border-radius: 5px;
@@ -107,22 +133,23 @@
         }
 
         .logout-btn:hover {
-            background: #f0f0f0;
+            background: #c0392b;
         }
 
         .form-section {
             background: white;
             padding: 30px;
-            border-radius: 5px;
+            border-radius: 10px;
             margin-bottom: 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         .form-section h2 {
+            color: #e74c3c;
             margin-bottom: 20px;
-            color: #333;
-            border-bottom: 3px solid #e74c3c;
-            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .form-group {
@@ -132,17 +159,17 @@
         .form-group label {
             display: block;
             margin-bottom: 5px;
-            font-weight: bold;
-            color: #333;
+            color: #2c3e50;
+            font-weight: 500;
         }
 
-        .form-group input,
-        .form-group textarea {
+        .form-group input, .form-group textarea {
             width: 100%;
             padding: 10px;
-            border: 1px solid #ddd;
+            border: 1px solid #ecf0f1;
             border-radius: 5px;
             font-size: 14px;
+            font-family: inherit;
         }
 
         .form-group textarea {
@@ -150,8 +177,14 @@
             min-height: 80px;
         }
 
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #e74c3c;
+            box-shadow: 0 0 5px rgba(231, 76, 60, 0.3);
+        }
+
         .btn-add {
-            background: #e74c3c;
+            background: #27ae60;
             color: white;
             padding: 12px 30px;
             border: none;
@@ -159,57 +192,67 @@
             cursor: pointer;
             font-weight: bold;
             font-size: 16px;
-            width: 100%;
+            transition: background 0.3s;
         }
 
         .btn-add:hover {
-            background: #c0392b;
+            background: #229954;
         }
 
-        .clients-list {
+        .clients-section {
             background: white;
             padding: 30px;
-            border-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .clients-list h2 {
+        .clients-section h2 {
+            color: #e74c3c;
             margin-bottom: 20px;
-            color: #333;
-            border-bottom: 3px solid #27ae60;
-            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .client-card {
-            background: #f9f9f9;
-            border-left: 5px solid #e74c3c;
+            border: 3px solid #e74c3c;
+            border-radius: 10px;
             padding: 20px;
-            margin-bottom: 15px;
-            border-radius: 5px;
+            margin-bottom: 20px;
+            background: #f8f9fa;
+            position: relative;
         }
 
         .client-card h3 {
             color: #e74c3c;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            font-size: 20px;
         }
 
         .client-info {
-            color: #666;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .client-info strong {
+            color: #34495e;
         }
 
         .client-actions {
-            margin-top: 15px;
             display: flex;
             gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
         }
 
-        .btn-small {
+        .btn-edit, .btn-delete, .btn-history {
             padding: 8px 15px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             font-weight: bold;
+            transition: all 0.3s;
+            font-size: 14px;
         }
 
         .btn-edit {
@@ -233,66 +276,100 @@
         .btn-history {
             background: #27ae60;
             color: white;
-            width: 100%;
+            flex: 1;
         }
 
         .btn-history:hover {
             background: #229954;
         }
 
+        /* Modal */
         .modal {
             display: none;
             position: fixed;
-            top: 0;
+            z-index: 999;
             left: 0;
+            top: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s;
         }
 
         .modal.show {
             display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .modal-content {
             background: white;
             padding: 30px;
-            border-radius: 5px;
+            border-radius: 10px;
             max-width: 500px;
             width: 90%;
             max-height: 80vh;
             overflow-y: auto;
+            animation: slideIn 0.3s;
         }
 
-        .modal-content h3 {
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
-            color: #333;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 15px;
+        }
+
+        .modal-header h2 {
+            color: #e74c3c;
+            margin: 0;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #7f8c8d;
+        }
+
+        .close-btn:hover {
+            color: #e74c3c;
         }
 
         .modal-buttons {
             display: flex;
             gap: 10px;
             margin-top: 20px;
+            justify-content: flex-end;
         }
 
-        .modal-buttons button {
-            flex: 1;
-            padding: 10px;
+        .btn-save, .btn-cancel {
+            padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             font-weight: bold;
         }
 
-        .btn-confirm {
+        .btn-save {
             background: #27ae60;
             color: white;
         }
 
-        .btn-confirm:hover {
+        .btn-save:hover {
             background: #229954;
         }
 
@@ -313,141 +390,163 @@
             color: white;
             padding: 15px 20px;
             border-radius: 5px;
-            display: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            animation: slideInRight 0.3s;
             z-index: 2000;
-            animation: slideIn 0.3s ease-in;
         }
 
-        .notification.show {
-            display: block;
+        @keyframes slideInRight {
+            from { transform: translateX(400px); }
+            to { transform: translateX(0); }
         }
 
-        @keyframes slideIn {
-            from {
-                transform: translateX(400px);
-            }
-            to {
-                transform: translateX(0);
-            }
+        .service-item {
+            background: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            border-left: 4px solid #e74c3c;
+        }
+
+        .service-item strong {
+            color: #e74c3c;
         }
 
         .empty-message {
             text-align: center;
-            color: #999;
-            padding: 40px;
-        }
-
-        .footer {
-            text-align: center;
-            color: #999;
-            margin-top: 40px;
+            color: #7f8c8d;
             padding: 20px;
+            font-style: italic;
         }
 
-        .service-item {
-            background: #f0f0f0;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            border-left: 4px solid #3498db;
-        }
-
-        .service-item h4 {
-            color: #333;
-            margin-bottom: 5px;
-        }
-
-        .service-item p {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 3px;
-        }
-
-        .status-badge {
-            display: inline-block;
-            padding: 3px 10px;
+        .btn-delete-service {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 5px 10px;
             border-radius: 3px;
+            cursor: pointer;
             font-size: 12px;
-            font-weight: bold;
+            margin-top: 10px;
         }
 
-        .status-concluido {
-            background: #27ae60;
-            color: white;
-        }
-
-        .status-pendente {
-            background: #f39c12;
-            color: white;
-        }
-
-        .status-agendado {
-            background: #3498db;
-            color: white;
+        .btn-delete-service:hover {
+            background: #c0392b;
         }
     </style>
 </head>
 <body>
-
-<div class="login-screen" id="loginScreen">
-    <div class="login-box">
-        <h1>🔐 Oficina Gerenciamento</h1>
-        <p>Acesso Restrito</p>
-        <input type="password" id="passwordInput" placeholder="Digite a senha">
-        <button onclick="fazerLogin()">ENTRAR</button>
-    </div>
-</div>
-
-<div class="main-screen" id="mainScreen">
-    <div class="container">
-        <div class="header">
-            <h1>🚗 Oficina Gerenciamento</h1>
-            <button class="logout-btn" onclick="fazerLogout()">SAIR</button>
+    <!-- Login -->
+    <div id="loginContainer" class="login-container">
+        <div class="login-box">
+            <h1>🔐 Oficina Gerenciamento</h1>
+            <p>Acesso Restrito</p>
+            <input type="password" id="passwordInput" placeholder="Digite a senha">
+            <button onclick="login()">ENTRAR</button>
         </div>
+    </div>
 
-        <div class="form-section">
-            <h2>➕ Adicionar Cliente</h2>
+    <!-- App -->
+    <div id="appContainer" class="app-container">
+        <div class="container">
+            <div class="header">
+                <h1>🚗 Oficina Gerenciamento</h1>
+                <button class="logout-btn" onclick="logout()">SAIR</button>
+            </div>
+
+            <!-- Formulário de Adicionar Cliente -->
+            <div class="form-section">
+                <h2>➕ Adicionar Cliente</h2>
+                <div class="form-group">
+                    <label>Nome do Cliente</label>
+                    <input type="text" id="clientName" placeholder="Ex: João Silva">
+                </div>
+                <div class="form-group">
+                    <label>Matrícula do Veículo</label>
+                    <input type="text" id="clientPlate" placeholder="Ex: AB-12-CD">
+                </div>
+                <div class="form-group">
+                    <label>Quilometragem (km)</label>
+                    <input type="number" id="clientKm" placeholder="Ex: 50000">
+                </div>
+                <div class="form-group">
+                    <label>Data</label>
+                    <input type="date" id="clientDate">
+                </div>
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <textarea id="clientDescription" placeholder="Descrição do cliente ou serviço"></textarea>
+                </div>
+                <button class="btn-add" onclick="addClient()">ADICIONAR CLIENTE</button>
+            </div>
+
+            <!-- Lista de Clientes -->
+            <div class="clients-section">
+                <h2>📋 Lista de Clientes</h2>
+                <div id="clientsList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Edição -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>✏️ Editar Cliente</h2>
+                <button class="close-btn" onclick="closeEditModal()">&times;</button>
+            </div>
             <div class="form-group">
                 <label>Nome do Cliente</label>
-                <input type="text" id="nome" placeholder="Ex: João Silva">
+                <input type="text" id="editClientName">
             </div>
             <div class="form-group">
                 <label>Matrícula do Veículo</label>
-                <input type="text" id="matricula" placeholder="Ex: AB-12-CD">
+                <input type="text" id="editClientPlate">
             </div>
             <div class="form-group">
                 <label>Quilometragem (km)</label>
-                <input type="number" id="km" placeholder="Ex: 125000">
+                <input type="number" id="editClientKm">
             </div>
             <div class="form-group">
                 <label>Data</label>
-                <input type="date" id="data">
+                <input type="date" id="editClientDate">
             </div>
             <div class="form-group">
                 <label>Descrição</label>
-                <textarea id="descricao" placeholder="Descrição do cliente ou serviço"></textarea>
+                <textarea id="editClientDescription"></textarea>
             </div>
-            <button class="btn-add" onclick="adicionarCliente()">ADICIONAR CLIENTE</button>
-        </div>
-
-        <div class="clients-list">
-            <h2>📋 Lista de Clientes</h2>
-            <div id="clientesList"></div>
-        </div>
-
-        <div class="footer">
-            <p>🏎️ Sistema de Gerenciamento de Oficina Automóvel 🏎️</p>
-            <p id="clienteCount">0 Clientes Registados</p>
+            <div class="modal-buttons">
+                <button class="btn-cancel" onclick="closeEditModal()">CANCELAR</button>
+                <button class="btn-save" onclick="saveEditClient()">GUARDAR ALTERAÇÕES</button>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="modal" id="historyModal">
-    <div class="modal-content">
-        <h3>📋 Histórico de Serviços</h3>
-        <div id="historyContent"></div>
-        <div class="form-section" style="margin-top: 20px;">
-            <h4>Adicionar Novo Serviço</h4>
+    <!-- Modal de Confirmação de Eliminação -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <div class="modal-header">
+                <h2>⚠️ Confirmar Eliminação</h2>
+                <button class="close-btn" onclick="closeDeleteModal()">&times;</button>
+            </div>
+            <p style="color: #2c3e50; margin-bottom: 20px;">Tem certeza que deseja deletar este cliente? Esta ação não pode ser desfeita.</p>
+            <div class="modal-buttons">
+                <button class="btn-cancel" onclick="closeDeleteModal()">CANCELAR</button>
+                <button class="btn-delete" onclick="confirmDelete()">DELETAR</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Histórico de Serviços -->
+    <div id="historyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📋 Histórico de Serviços</h2>
+                <button class="close-btn" onclick="closeHistoryModal()">&times;</button>
+            </div>
+            <div id="historyClientName" style="margin-bottom: 20px; color: #e74c3c; font-weight: bold; font-size: 18px;"></div>
+            
+            <h3 style="color: #2c3e50; margin-bottom: 15px;">Adicionar Novo Serviço</h3>
             <div class="form-group">
                 <label>Data do Serviço</label>
                 <input type="date" id="serviceDate">
@@ -458,7 +557,7 @@
             </div>
             <div class="form-group">
                 <label>Descrição</label>
-                <textarea id="serviceDesc" placeholder="Detalhes do serviço..."></textarea>
+                <textarea id="serviceDescription" placeholder="Descrição detalhada do serviço"></textarea>
             </div>
             <div class="form-group">
                 <label>Custo (€)</label>
@@ -466,209 +565,262 @@
             </div>
             <div class="form-group">
                 <label>Status</label>
-                <select id="serviceStatus">
+                <select id="serviceStatus" style="width: 100%; padding: 10px; border: 1px solid #ecf0f1; border-radius: 5px;">
                     <option value="Concluído">Concluído</option>
                     <option value="Pendente">Pendente</option>
                     <option value="Agendado">Agendado</option>
                 </select>
             </div>
-            <button class="btn-add" onclick="adicionarServico()">ADICIONAR SERVIÇO</button>
-        </div>
-        <div class="modal-buttons">
-            <button class="btn-cancel" onclick="fecharHistoryModal()">Fechar</button>
-        </div>
-    </div>
-</div>
+            <button class="btn-add" onclick="addService()" style="width: 100%;">ADICIONAR SERVIÇO</button>
 
-<div class="modal" id="confirmModal">
-    <div class="modal-content">
-        <h3>⚠️ Confirmar Eliminação</h3>
-        <p>Tem certeza que deseja deletar este cliente? Esta ação não pode ser desfeita.</p>
-        <div class="modal-buttons">
-            <button class="btn-confirm" onclick="confirmarDelecao()">Deletar</button>
-            <button class="btn-cancel" onclick="cancelarDelecao()">Cancelar</button>
-        </div>
-    </div>
-</div>
+            <h3 style="color: #2c3e50; margin-top: 30px; margin-bottom: 15px;">Serviços Registados</h3>
+            <div id="servicesList"></div>
 
-<div class="notification" id="notification"></div>
-
-<script>
-    const SENHA = "1234";
-    let clientes = JSON.parse(localStorage.getItem("clientes")) || [];
-    let clienteEmDelecao = null;
-    let clienteEmHistorico = null;
-
-    function fazerLogin() {
-        const senha = document.getElementById("passwordInput").value;
-        if (senha === SENHA) {
-            document.getElementById("loginScreen").style.display = "none";
-            document.getElementById("mainScreen").style.display = "block";
-            renderizarClientes();
-        } else {
-            alert("Senha incorreta!");
-        }
-    }
-
-    function fazerLogout() {
-        document.getElementById("mainScreen").style.display = "none";
-        document.getElementById("loginScreen").style.display = "flex";
-        document.getElementById("passwordInput").value = "";
-    }
-
-    function adicionarCliente() {
-        const nome = document.getElementById("nome").value || "Cliente Sem Nome";
-        const matricula = document.getElementById("matricula").value || "";
-        const km = document.getElementById("km").value || "";
-        const data = document.getElementById("data").value || "";
-        const descricao = document.getElementById("descricao").value || "";
-
-        const cliente = {
-            id: Date.now(),
-            nome,
-            matricula,
-            km,
-            data,
-            descricao,
-            servicos: []
-        };
-
-        clientes.push(cliente);
-        localStorage.setItem("clientes", JSON.stringify(clientes));
-        mostrarNotificacao("Cliente adicionado com sucesso!");
-        limparFormulario();
-        renderizarClientes();
-    }
-
-    function renderizarClientes() {
-        const lista = document.getElementById("clientesList");
-        if (clientes.length === 0) {
-            lista.innerHTML = '<div class="empty-message">Nenhum cliente cadastrado ainda. Adicione um cliente no formulário acima!</div>';
-            document.getElementById("clienteCount").textContent = "0 Clientes Registados";
-            return;
-        }
-
-        lista.innerHTML = clientes.map(cliente => `
-            <div class="client-card">
-                <h3>${cliente.nome}</h3>
-                ${cliente.matricula ? `<div class="client-info"><strong>Matrícula:</strong> ${cliente.matricula}</div>` : ""}
-                ${cliente.km ? `<div class="client-info"><strong>Quilometragem:</strong> ${cliente.km} km</div>` : ""}
-                ${cliente.data ? `<div class="client-info"><strong>Data:</strong> ${cliente.data}</div>` : ""}
-                ${cliente.descricao ? `<div class="client-info"><strong>Descrição:</strong> ${cliente.descricao}</div>` : ""}
-                <div class="client-actions">
-                    <button class="btn-small btn-edit" onclick="editarCliente(${cliente.id})">✏️ Editar</button>
-                    <button class="btn-small btn-delete" onclick="confirmarDelecaoCliente(${cliente.id})">🗑️ Deletar</button>
-                    <button class="btn-small btn-history" onclick="abrirHistorico(${cliente.id})">📋 Ver Histórico (${cliente.servicos.length})</button>
-                </div>
+            <div class="modal-buttons" style="margin-top: 20px;">
+                <button class="btn-cancel" onclick="closeHistoryModal()" style="width: 100%;">FECHAR</button>
             </div>
-        `).join("");
+        </div>
+    </div>
 
-        document.getElementById("clienteCount").textContent = `${clientes.length} Cliente${clientes.length !== 1 ? "s" : ""} Registado${clientes.length !== 1 ? "s" : ""}`;
-    }
+    <script>
+        const PASSWORD = "1234";
+        let clients = JSON.parse(localStorage.getItem("clients")) || [];
+        let currentEditingId = null;
+        let currentDeleteId = null;
+        let currentHistoryId = null;
 
-    function confirmarDelecaoCliente(id) {
-        clienteEmDelecao = id;
-        document.getElementById("confirmModal").classList.add("show");
-    }
+        function login() {
+            const password = document.getElementById("passwordInput").value;
+            if (password === PASSWORD) {
+                document.getElementById("loginContainer").classList.add("hidden");
+                document.getElementById("appContainer").classList.add("active");
+                renderClients();
+            } else {
+                showNotification("Senha incorreta!", "error");
+            }
+        }
 
-    function confirmarDelecao() {
-        clientes = clientes.filter(c => c.id !== clienteEmDelecao);
-        localStorage.setItem("clientes", JSON.stringify(clientes));
-        mostrarNotificacao("Cliente deletado com sucesso!");
-        document.getElementById("confirmModal").classList.remove("show");
-        renderizarClientes();
-    }
+        function logout() {
+            document.getElementById("loginContainer").classList.remove("hidden");
+            document.getElementById("appContainer").classList.remove("active");
+            document.getElementById("passwordInput").value = "";
+        }
 
-    function cancelarDelecao() {
-        document.getElementById("confirmModal").classList.remove("show");
-    }
+        function addClient() {
+            const name = document.getElementById("clientName").value.trim();
+            const plate = document.getElementById("clientPlate").value.trim();
+            const km = document.getElementById("clientKm").value.trim();
+            const date = document.getElementById("clientDate").value;
+            const description = document.getElementById("clientDescription").value.trim();
 
-    function abrirHistorico(id) {
-        clienteEmHistorico = clientes.find(c => c.id === id);
-        renderizarHistorico();
-        document.getElementById("historyModal").classList.add("show");
-    }
+            if (!name) {
+                showNotification("Por favor, preencha o nome do cliente!", "error");
+                return;
+            }
 
-    function renderizarHistorico() {
-        const content = document.getElementById("historyContent");
-        if (clienteEmHistorico.servicos.length === 0) {
-            content.innerHTML = '<p class="empty-message">Nenhum serviço registado ainda.</p>';
-        } else {
-            content.innerHTML = clienteEmHistorico.servicos.map((s, i) => `
-                <div class="service-item">
-                    <h4>${s.tipo}</h4>
-                    <p><strong>Data:</strong> ${s.data}</p>
-                    <p><strong>Descrição:</strong> ${s.descricao}</p>
-                    <p><strong>Custo:</strong> €${s.custo}</p>
-                    <p><span class="status-badge status-${s.status.toLowerCase()}">${s.status}</span></p>
-                    <button class="btn-small btn-delete" onclick="deletarServico(${i})" style="margin-top: 10px;">🗑️ Deletar</button>
+            const client = {
+                id: Date.now(),
+                name,
+                plate,
+                km,
+                date,
+                description,
+                services: []
+            };
+
+            clients.push(client);
+            localStorage.setItem("clients", JSON.stringify(clients));
+            
+            document.getElementById("clientName").value = "";
+            document.getElementById("clientPlate").value = "";
+            document.getElementById("clientKm").value = "";
+            document.getElementById("clientDate").value = "";
+            document.getElementById("clientDescription").value = "";
+
+            renderClients();
+            showNotification("Cliente adicionado com sucesso!", "success");
+        }
+
+        function renderClients() {
+            const clientsList = document.getElementById("clientsList");
+            
+            if (clients.length === 0) {
+                clientsList.innerHTML = '<div class="empty-message">Nenhum cliente registado ainda</div>';
+                return;
+            }
+
+            clientsList.innerHTML = clients.map(client => `
+                <div class="client-card">
+                    <h3>${client.name}</h3>
+                    ${client.plate ? `<div class="client-info"><strong>Matrícula:</strong> ${client.plate}</div>` : ""}
+                    ${client.km ? `<div class="client-info"><strong>Quilometragem:</strong> ${client.km} km</div>` : ""}
+                    ${client.date ? `<div class="client-info"><strong>Data:</strong> ${client.date}</div>` : ""}
+                    ${client.description ? `<div class="client-info"><strong>Descrição:</strong> ${client.description}</div>` : ""}
+                    <div class="client-actions">
+                        <button class="btn-edit" onclick="openEditModal(${client.id})">✏️ Editar</button>
+                        <button class="btn-delete" onclick="openDeleteModal(${client.id})">🗑️ Deletar</button>
+                        <button class="btn-history" onclick="openHistoryModal(${client.id})">📋 Ver Histórico (${client.services.length})</button>
+                    </div>
                 </div>
             `).join("");
         }
-    }
 
-    function adicionarServico() {
-        const data = document.getElementById("serviceDate").value;
-        const tipo = document.getElementById("serviceType").value;
-        const descricao = document.getElementById("serviceDesc").value;
-        const custo = document.getElementById("serviceCost").value;
-        const status = document.getElementById("serviceStatus").value;
+        function openEditModal(id) {
+            const client = clients.find(c => c.id === id);
+            if (!client) return;
 
-        if (!tipo) {
-            alert("Por favor, preencha o tipo de serviço!");
-            return;
+            currentEditingId = id;
+            document.getElementById("editClientName").value = client.name;
+            document.getElementById("editClientPlate").value = client.plate || "";
+            document.getElementById("editClientKm").value = client.km || "";
+            document.getElementById("editClientDate").value = client.date || "";
+            document.getElementById("editClientDescription").value = client.description || "";
+
+            document.getElementById("editModal").classList.add("show");
         }
 
-        clienteEmHistorico.servicos.push({
-            data,
-            tipo,
-            descricao,
-            custo,
-            status
+        function closeEditModal() {
+            document.getElementById("editModal").classList.remove("show");
+            currentEditingId = null;
+        }
+
+        function saveEditClient() {
+            const client = clients.find(c => c.id === currentEditingId);
+            if (!client) return;
+
+            client.name = document.getElementById("editClientName").value.trim();
+            client.plate = document.getElementById("editClientPlate").value.trim();
+            client.km = document.getElementById("editClientKm").value.trim();
+            client.date = document.getElementById("editClientDate").value;
+            client.description = document.getElementById("editClientDescription").value.trim();
+
+            localStorage.setItem("clients", JSON.stringify(clients));
+            renderClients();
+            closeEditModal();
+            showNotification("Cliente atualizado com sucesso!", "success");
+        }
+
+        function openDeleteModal(id) {
+            currentDeleteId = id;
+            document.getElementById("deleteModal").classList.add("show");
+        }
+
+        function closeDeleteModal() {
+            document.getElementById("deleteModal").classList.remove("show");
+            currentDeleteId = null;
+        }
+
+        function confirmDelete() {
+            clients = clients.filter(c => c.id !== currentDeleteId);
+            localStorage.setItem("clients", JSON.stringify(clients));
+            renderClients();
+            closeDeleteModal();
+            showNotification("Cliente deletado com sucesso!", "success");
+        }
+
+        function openHistoryModal(id) {
+            currentHistoryId = id;
+            const client = clients.find(c => c.id === id);
+            if (!client) return;
+
+            document.getElementById("historyClientName").textContent = `Cliente: ${client.name}`;
+            renderServices();
+            document.getElementById("historyModal").classList.add("show");
+        }
+
+        function closeHistoryModal() {
+            document.getElementById("historyModal").classList.remove("show");
+            currentHistoryId = null;
+        }
+
+        function addService() {
+            const client = clients.find(c => c.id === currentHistoryId);
+            if (!client) return;
+
+            const date = document.getElementById("serviceDate").value;
+            const type = document.getElementById("serviceType").value.trim();
+            const description = document.getElementById("serviceDescription").value.trim();
+            const cost = document.getElementById("serviceCost").value.trim();
+            const status = document.getElementById("serviceStatus").value;
+
+            if (!type) {
+                showNotification("Por favor, preencha o tipo de serviço!", "error");
+                return;
+            }
+
+            const service = {
+                id: Date.now(),
+                date,
+                type,
+                description,
+                cost,
+                status
+            };
+
+            client.services.push(service);
+            localStorage.setItem("clients", JSON.stringify(clients));
+
+            document.getElementById("serviceDate").value = "";
+            document.getElementById("serviceType").value = "";
+            document.getElementById("serviceDescription").value = "";
+            document.getElementById("serviceCost").value = "";
+            document.getElementById("serviceStatus").value = "Concluído";
+
+            renderServices();
+            showNotification("Serviço adicionado com sucesso!", "success");
+        }
+
+        function renderServices() {
+            const client = clients.find(c => c.id === currentHistoryId);
+            if (!client) return;
+
+            const servicesList = document.getElementById("servicesList");
+            
+            if (client.services.length === 0) {
+                servicesList.innerHTML = '<div class="empty-message">Nenhum serviço registado ainda</div>';
+                return;
+            }
+
+            servicesList.innerHTML = client.services.map(service => `
+                <div class="service-item">
+                    <div><strong>Data:</strong> ${service.date || "N/A"}</div>
+                    <div><strong>Tipo:</strong> ${service.type}</div>
+                    ${service.description ? `<div><strong>Descrição:</strong> ${service.description}</div>` : ""}
+                    ${service.cost ? `<div><strong>Custo:</strong> €${parseFloat(service.cost).toFixed(2)}</div>` : ""}
+                    <div><strong>Status:</strong> <span style="color: ${service.status === "Concluído" ? "#27ae60" : service.status === "Pendente" ? "#f39c12" : "#3498db"}">${service.status}</span></div>
+                    <button class="btn-delete-service" onclick="deleteService(${service.id})">Deletar Serviço</button>
+                </div>
+            `).join("");
+        }
+
+        function deleteService(serviceId) {
+            const client = clients.find(c => c.id === currentHistoryId);
+            if (!client) return;
+
+            client.services = client.services.filter(s => s.id !== serviceId);
+            localStorage.setItem("clients", JSON.stringify(clients));
+            renderServices();
+            showNotification("Serviço deletado com sucesso!", "success");
+        }
+
+        function showNotification(message, type = "success") {
+            const notification = document.createElement("div");
+            notification.className = "notification";
+            notification.textContent = message;
+            notification.style.background = type === "success" ? "#27ae60" : "#e74c3c";
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Inicializar
+        document.addEventListener("DOMContentLoaded", () => {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById("clientDate").value = today;
+            document.getElementById("serviceDate").value = today;
         });
-
-        localStorage.setItem("clientes", JSON.stringify(clientes));
-        mostrarNotificacao("Serviço adicionado com sucesso!");
-        document.getElementById("serviceDate").value = "";
-        document.getElementById("serviceType").value = "";
-        document.getElementById("serviceDesc").value = "";
-        document.getElementById("serviceCost").value = "";
-        renderizarHistorico();
-    }
-
-    function deletarServico(index) {
-        clienteEmHistorico.servicos.splice(index, 1);
-        localStorage.setItem("clientes", JSON.stringify(clientes));
-        mostrarNotificacao("Serviço deletado com sucesso!");
-        renderizarHistorico();
-    }
-
-    function fecharHistoryModal() {
-        document.getElementById("historyModal").classList.remove("show");
-    }
-
-    function limparFormulario() {
-        document.getElementById("nome").value = "";
-        document.getElementById("matricula").value = "";
-        document.getElementById("km").value = "";
-        document.getElementById("data").value = "";
-        document.getElementById("descricao").value = "";
-    }
-
-    function mostrarNotificacao(mensagem) {
-        const notif = document.getElementById("notification");
-        notif.textContent = mensagem;
-        notif.classList.add("show");
-        setTimeout(() => notif.classList.remove("show"), 3000);
-    }
-
-    function editarCliente(id) {
-        alert("Funcionalidade de edição em desenvolvimento!");
-    }
-
-    document.getElementById("data").valueAsDate = new Date();
-    document.getElementById("serviceDate").valueAsDate = new Date();
-</script>
-
+    </script>
 </body>
 </html>

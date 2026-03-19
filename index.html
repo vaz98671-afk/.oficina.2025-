@@ -758,12 +758,13 @@
             displayList.forEach(client => {
                 const card = document.createElement("div");
                 card.className = "client-card";
+                const descriptionFormatted = (client.description || "N/A").replace(/\n/g, "<br>");
                 card.innerHTML = `
                     <h3>${client.name}</h3>
                     <p><span class="label">Matrícula:</span> ${client.plate}</p>
                     <p><span class="label">Quilometragem:</span> ${client.km} km</p>
                     <p><span class="label">Data:</span> ${client.date}</p>
-                    <p><span class="label">Descrição:</span> ${client.description}</p>
+                    <p><span class="label">Descrição:</span> <span style="white-space: pre-wrap; word-wrap: break-word;">${descriptionFormatted}</span></p>
                     <div class="client-actions">
                         <button class="btn-edit" onclick="openEditModal('${client.id}')">✏️ Editar</button>
                         <button class="btn-delete" onclick="openDeleteConfirm('${client.id}')">🗑️ Deletar</button>

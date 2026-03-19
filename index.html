@@ -380,6 +380,52 @@
             color: #999;
         }
 
+        .search-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #2a5298;
+            box-shadow: 0 0 5px rgba(42, 82, 152, 0.3);
+        }
+
+        .search-icon {
+            color: #2a5298;
+            font-size: 20px;
+        }
+
+        .search-clear {
+            background: #95a5a6;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .search-clear:hover {
+            background: #7f8c8d;
+        }
+
         .footer {
             background: #f8f9fa;
             padding: 20px;
@@ -481,6 +527,14 @@
             <!-- Clients List -->
             <div>
                 <h2 style="color: #1e3c72; margin-bottom: 20px;">📋 Lista de Clientes</h2>
+                
+                <!-- Search Section -->
+                <div class="search-section">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchInput" class="search-input" placeholder="Procurar por nome ou matrícula..." onkeyup="filterClients()">
+                    <button class="search-clear" onclick="clearSearch()">Limpar</button>
+                </div>
+                
                 <div id="loadingSpinner" class="loading" style="display: none;">
                     <div class="spinner"></div>
                     <p>Carregando clientes...</p>
@@ -488,6 +542,9 @@
                 <div id="clientsList" class="clients-list"></div>
                 <div id="emptyState" class="empty-state" style="display: none;">
                     <p>Nenhum cliente registado ainda</p>
+                </div>
+                <div id="noResults" class="empty-state" style="display: none;">
+                    <p>Nenhum cliente encontrado com esse critério</p>
                 </div>
             </div>
         </div>
@@ -685,11 +742,20 @@
             }
         };
 
-        window.displayClients = function() {
+        window.displayClients = function(clientsToDisplay = null) {
             const clientsList = document.getElementById("clientsList");
+            const noResults = document.getElementById("noResults");
             clientsList.innerHTML = "";
+            noResults.style.display = "none";
 
-            window.clients.forEach(client => {
+            const displayList = clientsToDisplay || window.clients;
+
+            if (displayList.length === 0 && window.clients.length > 0) {
+                noResults.style.display = "block";
+                return;
+            }
+
+            displayList.forEach(client => {
                 const card = document.createElement("div");
                 card.className = "client-card";
                 card.innerHTML = `
@@ -845,10 +911,11 @@
                     const service = doc.data();
                     const serviceItem = document.createElement("div");
                     serviceItem.className = "service-item";
+                    const descriptionFormatted = (service.description || "N/A").replace(/\n/g, "<br>");
                     serviceItem.innerHTML = `
                         <div class="service-type">${service.type}</div>
                         <div class="service-date">${service.date}</div>
-                        <p>${service.description}</p>
+                        <p style="white-space: pre-wrap; word-wrap: break-word;">${descriptionFormatted}</p>
                         <div class="service-cost">Custo: €${service.cost}</div>
                         <div style="color: #666; font-size: 12px; margin-top: 5px;">Status: ${service.status}</div>
                         <button onclick="deleteService('${doc.id}')" style="background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px; margin-top: 10px;">🗑️ Deletar</button>
@@ -889,7 +956,29 @@
                 notification.classList.remove("active");
             }, 3000);
         };
+
+        window.filterClients = function() {
+            const searchTerm = document.getElementById("searchInput").value.toLowerCase().trim();
+            
+            if (!searchTerm) {
+                displayClients();
+                return;
+            }
+
+            const filtered = window.clients.filter(client => {
+                const name = (client.name || "").toLowerCase();
+                const plate = (client.plate || "").toLowerCase();
+                return name.includes(searchTerm) || plate.includes(searchTerm);
+            });
+
+            displayClients(filtered);
+        };
+
+        window.clearSearch = function() {
+            document.getElementById("searchInput").value = "";
+            document.getElementById("noResults").style.display = "none";
+            displayClients();
+        };
     </script>
 </body>
 </html>
-

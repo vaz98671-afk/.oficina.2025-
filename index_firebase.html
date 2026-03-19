@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oficina Gerenciamento</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            display: none;
+        }
+
+        .login-container.active {
+            display: block;
+        }
+
+        .login-container h1 {
+            color: #1e3c72;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .login-container p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .login-container input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .login-container input:focus {
+            outline: none;
+            border-color: #2a5298;
+        }
+
+        .login-container button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .login-container button:hover {
+            transform: translateY(-2px);
+        }
+
+        .app-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            max-width: 1200px;
+            width: 100%;
+            display: none;
+            overflow: hidden;
+        }
+
+        .app-container.active {
+            display: block;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
+        }
+
+        .header button {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid white;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .header button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .content {
+            padding: 30px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .form-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .form-section h2 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            color: #333;
+            margin-bottom: 5px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #2a5298;
+            box-shadow: 0 0 5px rgba(42, 82, 152, 0.3);
+        }
+
+        .btn-add {
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        .btn-add:hover {
+            transform: translateY(-2px);
+        }
+
+        .clients-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .client-card {
+            background: #f8f9fa;
+            border-left: 4px solid #2a5298;
+            padding: 20px;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .client-card h3 {
+            color: #1e3c72;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .client-card p {
+            color: #666;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .client-card .label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .client-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-edit,
+        .btn-delete,
+        .btn-history {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        .btn-edit {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-delete {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-history {
+            background: #27ae60;
+            color: white;
+            flex: 1;
+        }
+
+        .btn-edit:hover,
+        .btn-delete:hover,
+        .btn-history:hover {
+            transform: translateY(-2px);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-content h2 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+        }
+
+        .modal-content .form-grid {
+            margin-bottom: 20px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .btn-save,
+        .btn-cancel {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-save {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-cancel {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #27ae60;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 5px;
+            display: none;
+            z-index: 2000;
+            animation: slideIn 0.3s ease-in-out;
+        }
+
+        .notification.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #2a5298;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            border-top: 1px solid #ddd;
+        }
+
+        .services-list {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+        }
+
+        .service-item {
+            background: white;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border-left: 3px solid #27ae60;
+        }
+
+        .service-item .service-type {
+            font-weight: bold;
+            color: #1e3c72;
+        }
+
+        .service-item .service-date {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .service-item .service-cost {
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 15px;
+            }
+
+            .clients-list {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Container -->
+    <div class="login-container active" id="loginContainer">
+        <h1>🔐 Oficina Gerenciamento</h1>
+        <p>Sistema de Gerenciamento de Clientes</p>
+        <input type="password" id="passwordInput" placeholder="Digite a senha" />
+        <button onclick="login()">ENTRAR</button>
+    </div>
+
+    <!-- App Container -->
+    <div class="app-container" id="appContainer">
+        <div class="header">
+            <h1>🚗 Oficina Gerenciamento</h1>
+            <button onclick="logout()">SAIR</button>
+        </div>
+
+        <div class="content">
+            <!-- Form Section -->
+            <div class="form-section">
+                <h2>➕ Adicionar Cliente</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Nome do Cliente</label>
+                        <input type="text" id="clientName" placeholder="Nome completo">
+                    </div>
+                    <div class="form-group">
+                        <label>Matrícula</label>
+                        <input type="text" id="clientPlate" placeholder="Ex: AB-12-CD">
+                    </div>
+                    <div class="form-group">
+                        <label>Quilometragem (km)</label>
+                        <input type="number" id="clientKm" placeholder="Ex: 50000">
+                    </div>
+                    <div class="form-group">
+                        <label>Data</label>
+                        <input type="date" id="clientDate">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <textarea id="clientDescription" placeholder="Descrição do cliente ou serviço"></textarea>
+                </div>
+                <button class="btn-add" onclick="addClient()">ADICIONAR CLIENTE</button>
+            </div>
+
+            <!-- Clients List -->
+            <div>
+                <h2 style="color: #1e3c72; margin-bottom: 20px;">📋 Lista de Clientes</h2>
+                <div id="loadingSpinner" class="loading" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Carregando clientes...</p>
+                </div>
+                <div id="clientsList" class="clients-list"></div>
+                <div id="emptyState" class="empty-state" style="display: none;">
+                    <p>Nenhum cliente registado ainda</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Total de Clientes: <strong id="clientCount">0</strong></p>
+        </div>
+    </div>
+
+    <!-- Modal for Edit -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <h2>✏️ Editar Cliente</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Nome do Cliente</label>
+                    <input type="text" id="editName">
+                </div>
+                <div class="form-group">
+                    <label>Matrícula</label>
+                    <input type="text" id="editPlate">
+                </div>
+                <div class="form-group">
+                    <label>Quilometragem (km)</label>
+                    <input type="number" id="editKm">
+                </div>
+                <div class="form-group">
+                    <label>Data</label>
+                    <input type="date" id="editDate">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Descrição</label>
+                <textarea id="editDescription"></textarea>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-cancel" onclick="closeEditModal()">CANCELAR</button>
+                <button class="btn-save" onclick="saveEdit()">GUARDAR ALTERAÇÕES</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for History -->
+    <div class="modal" id="historyModal">
+        <div class="modal-content">
+            <h2 id="historyTitle">📜 Histórico de Serviços</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Data do Serviço</label>
+                    <input type="date" id="serviceDate">
+                </div>
+                <div class="form-group">
+                    <label>Tipo de Serviço</label>
+                    <input type="text" id="serviceType" placeholder="Ex: Substituição de óleo">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Descrição</label>
+                <textarea id="serviceDescription" placeholder="Descrição detalhada do serviço"></textarea>
+            </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Custo (€)</label>
+                    <input type="number" id="serviceCost" placeholder="0.00" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="serviceStatus" style="padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                        <option value="Concluído">Concluído</option>
+                        <option value="Pendente">Pendente</option>
+                        <option value="Agendado">Agendado</option>
+                    </select>
+                </div>
+            </div>
+            <button class="btn-add" onclick="addService()" style="width: 100%; margin-bottom: 20px;">ADICIONAR SERVIÇO</button>
+            
+            <div id="servicesList" class="services-list"></div>
+            
+            <div class="modal-buttons">
+                <button class="btn-cancel" onclick="closeHistoryModal()">FECHAR</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal" id="confirmModal">
+        <div class="modal-content" style="max-width: 400px;">
+            <h2>⚠️ Confirmar Eliminação</h2>
+            <p id="confirmMessage">Tem certeza que deseja deletar este cliente? Esta ação não pode ser desfeita.</p>
+            <div class="modal-buttons">
+                <button class="btn-cancel" onclick="cancelDelete()">CANCELAR</button>
+                <button class="btn-delete" onclick="confirmDelete()" style="background: #e74c3c; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; color: white;">DELETAR</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, where } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyD4Ic6CJjs7TsPOfdd77m_aNWnG223ylcI",
+            authDomain: "oficina-gerenciamento.firebaseapp.com",
+            projectId: "oficina-gerenciamento",
+            storageBucket: "oficina-gerenciamento.firebasestorage.app",
+            messagingSenderId: "373256134743",
+            appId: "1:373256134743:web:adb6beb4d3775511950312",
+            measurementId: "G-WTRTJ0NL6M"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.PASSWORD = "1234";
+        window.currentClientId = null;
+        window.clients = [];
+
+        window.login = function() {
+            const password = document.getElementById("passwordInput").value;
+            if (password === window.PASSWORD) {
+                document.getElementById("loginContainer").classList.remove("active");
+                document.getElementById("appContainer").classList.add("active");
+                document.getElementById("passwordInput").value = "";
+                loadClients();
+            } else {
+                alert("Senha incorreta!");
+            }
+        };
+
+        window.logout = function() {
+            document.getElementById("appContainer").classList.remove("active");
+            document.getElementById("loginContainer").classList.add("active");
+            document.getElementById("passwordInput").value = "";
+        };
+
+        window.addClient = async function() {
+            const name = document.getElementById("clientName").value.trim();
+            const plate = document.getElementById("clientPlate").value.trim();
+            const km = document.getElementById("clientKm").value.trim();
+            const date = document.getElementById("clientDate").value;
+            const description = document.getElementById("clientDescription").value.trim();
+
+            if (!name) {
+                alert("Por favor, preencha o nome do cliente!");
+                return;
+            }
+
+            try {
+                await addDoc(collection(db, "clients"), {
+                    name: name,
+                    plate: plate || "N/A",
+                    km: km || "N/A",
+                    date: date || new Date().toISOString().split('T')[0],
+                    description: description || "N/A",
+                    createdAt: new Date()
+                });
+
+                showNotification("Cliente adicionado com sucesso!");
+                clearForm();
+                loadClients();
+            } catch (error) {
+                console.error("Erro ao adicionar cliente:", error);
+                alert("Erro ao adicionar cliente!");
+            }
+        };
+
+        window.loadClients = async function() {
+            document.getElementById("loadingSpinner").style.display = "block";
+            document.getElementById("clientsList").innerHTML = "";
+
+            try {
+                const querySnapshot = await getDocs(collection(db, "clients"));
+                window.clients = [];
+                querySnapshot.forEach((doc) => {
+                    window.clients.push({ id: doc.id, ...doc.data() });
+                });
+
+                document.getElementById("loadingSpinner").style.display = "none";
+
+                if (window.clients.length === 0) {
+                    document.getElementById("emptyState").style.display = "block";
+                    document.getElementById("clientsList").innerHTML = "";
+                } else {
+                    document.getElementById("emptyState").style.display = "none";
+                    displayClients();
+                }
+
+                document.getElementById("clientCount").textContent = window.clients.length;
+            } catch (error) {
+                console.error("Erro ao carregar clientes:", error);
+                document.getElementById("loadingSpinner").style.display = "none";
+            }
+        };
+
+        window.displayClients = function() {
+            const clientsList = document.getElementById("clientsList");
+            clientsList.innerHTML = "";
+
+            window.clients.forEach(client => {
+                const card = document.createElement("div");
+                card.className = "client-card";
+                card.innerHTML = `
+                    <h3>${client.name}</h3>
+                    <p><span class="label">Matrícula:</span> ${client.plate}</p>
+                    <p><span class="label">Quilometragem:</span> ${client.km} km</p>
+                    <p><span class="label">Data:</span> ${client.date}</p>
+                    <p><span class="label">Descrição:</span> ${client.description}</p>
+                    <div class="client-actions">
+                        <button class="btn-edit" onclick="openEditModal('${client.id}')">✏️ Editar</button>
+                        <button class="btn-delete" onclick="openDeleteConfirm('${client.id}')">🗑️ Deletar</button>
+                        <button class="btn-history" onclick="openHistoryModal('${client.id}')">📜 Ver Histórico</button>
+                    </div>
+                `;
+                clientsList.appendChild(card);
+            });
+        };
+
+        window.openEditModal = function(clientId) {
+            const client = window.clients.find(c => c.id === clientId);
+            if (client) {
+                document.getElementById("editName").value = client.name;
+                document.getElementById("editPlate").value = client.plate;
+                document.getElementById("editKm").value = client.km;
+                document.getElementById("editDate").value = client.date;
+                document.getElementById("editDescription").value = client.description;
+                window.currentClientId = clientId;
+                document.getElementById("editModal").classList.add("active");
+            }
+        };
+
+        window.closeEditModal = function() {
+            document.getElementById("editModal").classList.remove("active");
+            window.currentClientId = null;
+        };
+
+        window.saveEdit = async function() {
+            if (!window.currentClientId) return;
+
+            const name = document.getElementById("editName").value.trim();
+            if (!name) {
+                alert("Por favor, preencha o nome!");
+                return;
+            }
+
+            try {
+                await updateDoc(doc(db, "clients", window.currentClientId), {
+                    name: name,
+                    plate: document.getElementById("editPlate").value.trim() || "N/A",
+                    km: document.getElementById("editKm").value.trim() || "N/A",
+                    date: document.getElementById("editDate").value || new Date().toISOString().split('T')[0],
+                    description: document.getElementById("editDescription").value.trim() || "N/A"
+                });
+
+                showNotification("Cliente atualizado com sucesso!");
+                closeEditModal();
+                loadClients();
+            } catch (error) {
+                console.error("Erro ao atualizar cliente:", error);
+                alert("Erro ao atualizar cliente!");
+            }
+        };
+
+        window.openDeleteConfirm = function(clientId) {
+            window.currentClientId = clientId;
+            document.getElementById("confirmModal").classList.add("active");
+        };
+
+        window.cancelDelete = function() {
+            document.getElementById("confirmModal").classList.remove("active");
+            window.currentClientId = null;
+        };
+
+        window.confirmDelete = async function() {
+            if (!window.currentClientId) return;
+
+            try {
+                await deleteDoc(doc(db, "clients", window.currentClientId));
+                showNotification("Cliente deletado com sucesso!");
+                cancelDelete();
+                loadClients();
+            } catch (error) {
+                console.error("Erro ao deletar cliente:", error);
+                alert("Erro ao deletar cliente!");
+            }
+        };
+
+        window.openHistoryModal = function(clientId) {
+            window.currentClientId = clientId;
+            const client = window.clients.find(c => c.id === clientId);
+            if (client) {
+                document.getElementById("historyTitle").textContent = `📜 Histórico de Serviços - ${client.name}`;
+                loadServices(clientId);
+                document.getElementById("historyModal").classList.add("active");
+            }
+        };
+
+        window.closeHistoryModal = function() {
+            document.getElementById("historyModal").classList.remove("active");
+            window.currentClientId = null;
+        };
+
+        window.addService = async function() {
+            if (!window.currentClientId) return;
+
+            const date = document.getElementById("serviceDate").value;
+            const type = document.getElementById("serviceType").value.trim();
+            const description = document.getElementById("serviceDescription").value.trim();
+            const cost = document.getElementById("serviceCost").value;
+            const status = document.getElementById("serviceStatus").value;
+
+            if (!type) {
+                alert("Por favor, preencha o tipo de serviço!");
+                return;
+            }
+
+            try {
+                await addDoc(collection(db, "services"), {
+                    clientId: window.currentClientId,
+                    date: date || new Date().toISOString().split('T')[0],
+                    type: type,
+                    description: description || "N/A",
+                    cost: cost || "0",
+                    status: status,
+                    createdAt: new Date()
+                });
+
+                showNotification("Serviço adicionado com sucesso!");
+                document.getElementById("serviceDate").value = "";
+                document.getElementById("serviceType").value = "";
+                document.getElementById("serviceDescription").value = "";
+                document.getElementById("serviceCost").value = "";
+                loadServices(window.currentClientId);
+            } catch (error) {
+                console.error("Erro ao adicionar serviço:", error);
+                alert("Erro ao adicionar serviço!");
+            }
+        };
+
+        window.loadServices = async function(clientId) {
+            try {
+                const q = query(collection(db, "services"), where("clientId", "==", clientId));
+                const querySnapshot = await getDocs(q);
+                const servicesList = document.getElementById("servicesList");
+                servicesList.innerHTML = "";
+
+                if (querySnapshot.empty) {
+                    servicesList.innerHTML = "<p style='text-align: center; color: #999;'>Nenhum serviço registado ainda</p>";
+                    return;
+                }
+
+                querySnapshot.forEach((doc) => {
+                    const service = doc.data();
+                    const serviceItem = document.createElement("div");
+                    serviceItem.className = "service-item";
+                    serviceItem.innerHTML = `
+                        <div class="service-type">${service.type}</div>
+                        <div class="service-date">${service.date}</div>
+                        <p>${service.description}</p>
+                        <div class="service-cost">Custo: €${service.cost}</div>
+                        <div style="color: #666; font-size: 12px; margin-top: 5px;">Status: ${service.status}</div>
+                        <button onclick="deleteService('${doc.id}')" style="background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px; margin-top: 10px;">🗑️ Deletar</button>
+                    `;
+                    servicesList.appendChild(serviceItem);
+                });
+            } catch (error) {
+                console.error("Erro ao carregar serviços:", error);
+            }
+        };
+
+        window.deleteService = async function(serviceId) {
+            if (confirm("Tem certeza que deseja deletar este serviço?")) {
+                try {
+                    await deleteDoc(doc(db, "services", serviceId));
+                    showNotification("Serviço deletado com sucesso!");
+                    loadServices(window.currentClientId);
+                } catch (error) {
+                    console.error("Erro ao deletar serviço:", error);
+                    alert("Erro ao deletar serviço!");
+                }
+            }
+        };
+
+        window.clearForm = function() {
+            document.getElementById("clientName").value = "";
+            document.getElementById("clientPlate").value = "";
+            document.getElementById("clientKm").value = "";
+            document.getElementById("clientDate").value = "";
+            document.getElementById("clientDescription").value = "";
+        };
+
+        window.showNotification = function(message) {
+            const notification = document.getElementById("notification");
+            notification.textContent = message;
+            notification.classList.add("active");
+            setTimeout(() => {
+                notification.classList.remove("active");
+            }, 3000);
+        };
+    </script>
+</body>
+</html>

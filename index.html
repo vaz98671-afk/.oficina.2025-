@@ -629,6 +629,45 @@
         </div>
     </div>
 
+    <!-- Modal for Edit Service -->
+    <div class="modal" id="editServiceModal">
+        <div class="modal-content">
+            <h2>✏️ Editar Serviço</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Data do Serviço</label>
+                    <input type="date" id="editServiceDate">
+                </div>
+                <div class="form-group">
+                    <label>Tipo de Serviço</label>
+                    <input type="text" id="editServiceType" placeholder="Ex: Substituição de óleo">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Descrição</label>
+                <textarea id="editServiceDescription" placeholder="Descrição detalhada do serviço"></textarea>
+            </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Custo (€)</label>
+                    <input type="number" id="editServiceCost" placeholder="0.00" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="editServiceStatus" style="padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                        <option value="Concluído">Concluído</option>
+                        <option value="Pendente">Pendente</option>
+                        <option value="Agendado">Agendado</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-cancel" onclick="closeEditServiceModal()">CANCELAR</button>
+                <button class="btn-save" onclick="saveEditService()">GUARDAR ALTERAÇÕES</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Notification -->
     <div class="notification" id="notification"></div>
 
@@ -646,7 +685,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, where } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, where, getDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyD4Ic6CJjs7TsPOfdd77m_aNWnG223ylcI",
@@ -919,7 +958,10 @@
                         <p style="white-space: pre-wrap; word-wrap: break-word;">${descriptionFormatted}</p>
                         <div class="service-cost">Custo: €${service.cost}</div>
                         <div style="color: #666; font-size: 12px; margin-top: 5px;">Status: ${service.status}</div>
-                        <button onclick="deleteService('${doc.id}')" style="background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px; margin-top: 10px;">🗑️ Deletar</button>
+                        <div style="display: flex; gap: 5px; margin-top: 10px;">
+                            <button onclick="openEditServiceModal('${doc.id}')" style="background: #3498db; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px; flex: 1;">✏️ Editar</button>
+                            <button onclick="deleteService('${doc.id}')" style="background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px; flex: 1;">🗑️ Deletar</button>
+                        </div>
                     `;
                     servicesList.appendChild(serviceItem);
                 });
@@ -938,6 +980,69 @@
                     console.error("Erro ao deletar serviço:", error);
                     alert("Erro ao deletar serviço!");
                 }
+            }
+        };
+
+        window.currentServiceId = null;
+        window.currentService = null;
+
+        window.openEditServiceModal = async function(serviceId) {
+            try {
+                const serviceDoc = await getDoc(doc(db, "services", serviceId));
+                if (serviceDoc.exists()) {
+                    const service = serviceDoc.data();
+                    window.currentServiceId = serviceId;
+                    window.currentService = service;
+                    
+                    document.getElementById("editServiceDate").value = service.date || "";
+                    document.getElementById("editServiceType").value = service.type || "";
+                    document.getElementById("editServiceDescription").value = service.description || "";
+                    document.getElementById("editServiceCost").value = service.cost || "0";
+                    document.getElementById("editServiceStatus").value = service.status || "Concluído";
+                    
+                    document.getElementById("editServiceModal").classList.add("active");
+                }
+            } catch (error) {
+                console.error("Erro ao abrir modal de edição:", error);
+                alert("Erro ao abrir serviço para edição!");
+            }
+        };
+
+        window.closeEditServiceModal = function() {
+            document.getElementById("editServiceModal").classList.remove("active");
+            window.currentServiceId = null;
+            window.currentService = null;
+        };
+
+        window.saveEditService = async function() {
+            if (!window.currentServiceId) return;
+
+            const date = document.getElementById("editServiceDate").value;
+            const type = document.getElementById("editServiceType").value.trim();
+            const description = document.getElementById("editServiceDescription").value.trim();
+            const cost = document.getElementById("editServiceCost").value;
+            const status = document.getElementById("editServiceStatus").value;
+
+            if (!type) {
+                alert("Por favor, preencha o tipo de serviço!");
+                return;
+            }
+
+            try {
+                await updateDoc(doc(db, "services", window.currentServiceId), {
+                    date: date || new Date().toISOString().split('T')[0],
+                    type: type,
+                    description: description || "N/A",
+                    cost: cost || "0",
+                    status: status
+                });
+
+                showNotification("Serviço atualizado com sucesso!");
+                closeEditServiceModal();
+                loadServices(window.currentClientId);
+            } catch (error) {
+                console.error("Erro ao atualizar serviço:", error);
+                alert("Erro ao atualizar serviço!");
             }
         };
 
